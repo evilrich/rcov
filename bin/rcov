@@ -359,7 +359,7 @@ def rcov_load_aggregate_data(file)
   require 'zlib'
   begin
     old_data = nil
-    Zlib::GzipReader.open(file){|gz| old_data = Marshal.load(gz) }
+    File.open(file){|f| old_data = Marshal.load(f) }
   rescue
     old_data = {}
   end
@@ -368,7 +368,7 @@ end
 
 def rcov_save_aggregate_data(file)
   require 'zlib'
-  Zlib::GzipWriter.open(file) do |f|
+  File.open(file, 'w+') do |f|
     Marshal.dump({:callsites => $rcov_callsite_analyzer, :coverage => $rcov_code_coverage_analyzer}, f)
   end
 end
